@@ -1,31 +1,24 @@
 # Adgar Chat
 
-Smart Q&A chat for new Adgar Investments & Development employees.
-Answers are grounded in the company procedures handbook (חוברת נהלים אדגר 12.2024).
+Keyword search over the Adgar company procedures handbook (חוברת נהלים אדגר 12.2024),
+built for new employees who need to find the right procedure fast.
 
 ## How it works (MVP — phase 1)
 
-- **Static site** — pure HTML/CSS/JS, deployed on GitHub Pages. No backend.
+- **Pure static site** — HTML/CSS/JS, deployed on GitHub Pages. No backend, no API keys.
 - **Knowledge source** — `handbook.txt`, extracted once from the PDF.
-- **LLM** — Claude Haiku 4.5 via the Anthropic API.
-- **API key** — hardcoded in `app.js` (constant `ANTHROPIC_API_KEY`). MVP only.
-  ⚠️ Set a monthly spend cap in console.anthropic.com before going live, and rotate the key if abused.
-- **No login** — MVP is open-access; add auth in phase 2 if needed.
+- **Search** — on each query, the page tokenizes the question, scores each paragraph
+  of the handbook by keyword overlap, and shows the top 5 matches with highlighted terms
+  and the source procedure name.
+- **No login** — open access.
 
 ## Local development
-
-Serve the folder with any static server. For example:
 
 ```bash
 python3 -m http.server 8080
 ```
 
 Open <http://localhost:8080>.
-
-## Deploying to GitHub Pages
-
-Push to `main`, then in repo **Settings → Pages**, set source to `main` / root.
-Site will be live at `https://<user>.github.io/adgar-chat/`.
 
 ## Updating the handbook
 
@@ -35,11 +28,12 @@ Re-extract with poppler:
 pdftotext -enc UTF-8 -layout "חוברת נהלים אדגר  12.2024.pdf" handbook.txt
 ```
 
-Commit and push — Pages will redeploy automatically.
+Commit and push — GitHub Pages redeploys automatically.
 
 ## Phase 2 ideas
 
-- Proxy the API key via Cloudflare Workers so employees don't need their own keys
-- Add real login (Auth0 / Supabase)
-- Multiple source documents + vector search instead of single-document context
-- Admin UI for uploading new documents
+- Upgrade from keyword search to LLM-backed Q&A (requires a serverless proxy for the API
+  key — Vercel / Cloudflare Workers — since keys committed to a public repo are
+  auto-revoked by Anthropic within minutes).
+- Add login + per-user usage.
+- Multiple source documents.

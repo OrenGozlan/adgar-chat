@@ -207,6 +207,38 @@ main {
 
 .msg.assistant.welcome .bubble { color: var(--text-dim); font-style: italic; }
 
+.bubble.results { max-width: 92%; }
+.bubble.results .muted { color: var(--text-dim); font-size: 13px; margin: 0 0 10px; }
+
+.result-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.result-card:last-child { margin-bottom: 0; }
+.result-head {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+.result-body {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+.result-body mark {
+  background: rgba(106, 166, 255, 0.28);
+  color: var(--text);
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
 .msg.error .bubble {
   background: rgba(255, 107, 107, 0.08);
   border: 1px solid rgba(255, 107, 107, 0.4);

@@ -1,6 +1,7 @@
+const ANTHROPIC_API_KEY = "__REPLACE_WITH_ANTHROPIC_KEY__";
+
 const API_URL = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-haiku-4-5-20251001";
-const STORAGE_KEY = "adgar-chat:anthropic-key";
 
 const els = {
   messages: document.getElementById("messages"),
@@ -8,19 +9,11 @@ const els = {
   input: document.getElementById("userInput"),
   sendBtn: document.getElementById("sendBtn"),
   faqList: document.getElementById("faqList"),
-  settingsBtn: document.getElementById("settingsBtn"),
-  settingsModal: document.getElementById("settingsModal"),
-  apiKeyInput: document.getElementById("apiKeyInput"),
-  saveKeyBtn: document.getElementById("saveKeyBtn"),
-  clearKeyBtn: document.getElementById("clearKeyBtn"),
-  closeModalBtn: document.getElementById("closeModalBtn"),
-  keyStatus: document.getElementById("keyStatus"),
 };
 
 const state = {
   handbook: null,
   history: [],
-  apiKey: localStorage.getItem(STORAGE_KEY) || "",
 };
 
 const SYSTEM_INSTRUCTIONS = `אתה עוזר חכם לעובדי חברת אדגר השקעות ופיתוח בע"מ.
@@ -42,16 +35,6 @@ async function loadHandbook() {
   const res = await fetch("handbook.txt");
   if (!res.ok) throw new Error("Failed to load handbook");
   return await res.text();
-}
-
-function updateKeyStatus() {
-  if (state.apiKey) {
-    els.keyStatus.textContent = "מפתח API מוגדר";
-    els.keyStatus.className = "ok";
-  } else {
-    els.keyStatus.textContent = "אין מפתח API — לחץ על ⚙ להגדרה";
-    els.keyStatus.className = "missing";
-  }
 }
 
 function appendMessage(role, text, { error = false } = {}) {
@@ -79,11 +62,6 @@ function appendTyping() {
 }
 
 async function askClaude(userText) {
-  if (!state.apiKey) {
-    openSettings();
-    appendMessage("assistant", "כדי להתחיל, הוסף מפתח Anthropic API בהגדרות (⚙).", { error: true });
-    return;
-  }
   if (!state.handbook) {
     appendMessage("assistant", "החוברת עדיין נטענת, נסה שוב בעוד רגע.", { error: true });
     return;
@@ -109,7 +87,7 @@ async function askClaude(userText) {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "x-api-key": state.apiKey,
+        "x-api-key": ANTHROPIC_API_KEY,
         "anthropic-version": "2023-06-01",
         "anthropic-dangerous-direct-browser-access": "true",
       },
@@ -149,15 +127,6 @@ async function askClaude(userText) {
   }
 }
 
-function openSettings() {
-  els.apiKeyInput.value = state.apiKey;
-  els.settingsModal.classList.remove("hidden");
-}
-
-function closeSettings() {
-  els.settingsModal.classList.add("hidden");
-}
-
 els.form.addEventListener("submit", (e) => {
   e.preventDefault();
   const q = els.input.value.trim();
@@ -172,34 +141,10 @@ els.faqList.addEventListener("click", (e) => {
   if (q) askClaude(q);
 });
 
-els.settingsBtn.addEventListener("click", openSettings);
-els.closeModalBtn.addEventListener("click", closeSettings);
-els.settingsModal.addEventListener("click", (e) => {
-  if (e.target === els.settingsModal) closeSettings();
-});
-
-els.saveKeyBtn.addEventListener("click", () => {
-  const key = els.apiKeyInput.value.trim();
-  if (!key) return;
-  localStorage.setItem(STORAGE_KEY, key);
-  state.apiKey = key;
-  updateKeyStatus();
-  closeSettings();
-});
-
-els.clearKeyBtn.addEventListener("click", () => {
-  localStorage.removeItem(STORAGE_KEY);
-  state.apiKey = "";
-  els.apiKeyInput.value = "";
-  updateKeyStatus();
-});
-
 (async function init() {
-  updateKeyStatus();
   try {
     state.handbook = await loadHandbook();
   } catch (err) {
     appendMessage("assistant", `שגיאה בטעינת חוברת הנהלים: ${err.message}`, { error: true });
   }
-  if (!state.apiKey) openSettings();
 })();

@@ -8,8 +8,8 @@ Answers are grounded in the company procedures handbook (חוברת נהלים �
 - **Static site** — pure HTML/CSS/JS, deployed on GitHub Pages. No backend.
 - **Knowledge source** — `handbook.txt`, extracted once from the PDF.
 - **LLM** — Claude Haiku 4.5 via the Anthropic API.
-- **API key** — each user enters their own Anthropic API key via the ⚙ settings modal.
-  Key is stored only in their browser's `localStorage` and sent directly to Anthropic (no middleman).
+- **API key** — hardcoded in `app.js` (constant `ANTHROPIC_API_KEY`). MVP only.
+  ⚠️ Set a monthly spend cap in console.anthropic.com before going live, and rotate the key if abused.
 - **No login** — MVP is open-access; add auth in phase 2 if needed.
 
 ## Local development

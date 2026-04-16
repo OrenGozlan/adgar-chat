@@ -15,7 +15,6 @@
         <p>עוזר חכם לנהלי החברה — מבוסס על חוברת הנהלים 12.2024</p>
       </div>
     </div>
-    <button id="settingsBtn" class="icon-btn" title="הגדרות">⚙</button>
   </header>
 
   <main>
@@ -67,27 +66,8 @@
     </section>
   </main>
 
-  <div id="settingsModal" class="modal hidden">
-    <div class="modal-card">
-      <h3>הגדרות</h3>
-      <p class="modal-hint">
-        המפתח נשמר בדפדפן שלך בלבד (localStorage) ולא נשלח לשום שרת חוץ מ-Anthropic.
-        השג מפתח ב-<a href="https://console.anthropic.com/" target="_blank" rel="noopener">console.anthropic.com</a>.
-      </p>
-      <label>
-        Anthropic API Key
-        <input id="apiKeyInput" type="password" placeholder="sk-ant-..." />
-      </label>
-      <div class="modal-actions">
-        <button id="saveKeyBtn" class="primary">שמור</button>
-        <button id="clearKeyBtn" class="ghost">מחק מפתח</button>
-        <button id="closeModalBtn" class="ghost">סגור</button>
-      </div>
-    </div>
-  </div>
-
   <footer class="site-footer">
-    שלב 1 MVP · המידע מוגבל לחוברת הנהלים 12.2024 · <span id="keyStatus">אין מפתח API</span>
+    שלב 1 MVP · המידע מוגבל לחוברת הנהלים 12.2024
   </footer>
 
   <script src="app.js" type="module"></script>

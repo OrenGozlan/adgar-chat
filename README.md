@@ -1,24 +1,38 @@
 # Adgar Chat
 
-Keyword search over the Adgar company procedures handbook (חוברת נהלים אדגר 12.2024),
-built for new employees who need to find the right procedure fast.
+Smart Q&A chat for new Adgar Investments & Development employees.
+Answers are grounded in the company procedures handbook (חוברת נהלים אדגר 12.2024).
 
-## How it works (MVP — phase 1)
+## Architecture (MVP — phase 1)
 
-- **Pure static site** — HTML/CSS/JS, deployed on GitHub Pages. No backend, no API keys.
-- **Knowledge source** — `handbook.txt`, extracted once from the PDF.
-- **Search** — on each query, the page tokenizes the question, scores each paragraph
-  of the handbook by keyword overlap, and shows the top 5 matches with highlighted terms
-  and the source procedure name.
-- **No login** — open access.
+- **Frontend** — static HTML/CSS/JS (dark-theme RTL Hebrew).
+- **Backend** — one Vercel serverless function at `api/chat.js` that forwards
+  requests to the Anthropic API. The API key lives in Vercel environment
+  variables — never in the repo or the browser.
+- **Knowledge source** — `handbook.txt`, extracted once from the PDF and
+  injected as the system prompt on every call (with Anthropic prompt caching
+  so follow-up questions are cheap).
+- **LLM** — Claude Haiku 4.5.
+
+## Deploying to Vercel
+
+1. Sign in at <https://vercel.com> with GitHub.
+2. Click **Add New → Project**, import `OrenGozlan/adgar-chat`.
+3. Leave framework preset as "Other". Click **Deploy**.
+4. After deploy, open **Project → Settings → Environment Variables** and add:
+   - **Name:** `ANTHROPIC_API_KEY`
+   - **Value:** your Anthropic key (get one at <https://console.anthropic.com/>)
+5. Go back to **Deployments** and click **Redeploy** on the latest deploy
+   so the function picks up the env var.
+
+Site will be live at `https://adgar-chat.vercel.app` (or whatever Vercel assigns).
 
 ## Local development
 
 ```bash
-python3 -m http.server 8080
+npm i -g vercel
+vercel dev
 ```
-
-Open <http://localhost:8080>.
 
 ## Updating the handbook
 
@@ -28,12 +42,11 @@ Re-extract with poppler:
 pdftotext -enc UTF-8 -layout "חוברת נהלים אדגר  12.2024.pdf" handbook.txt
 ```
 
-Commit and push — GitHub Pages redeploys automatically.
+Commit and push — Vercel redeploys automatically on every push to `main`.
 
 ## Phase 2 ideas
 
-- Upgrade from keyword search to LLM-backed Q&A (requires a serverless proxy for the API
-  key — Vercel / Cloudflare Workers — since keys committed to a public repo are
-  auto-revoked by Anthropic within minutes).
-- Add login + per-user usage.
-- Multiple source documents.
+- Add login (per-user rate limiting, usage metrics)
+- Multiple source documents + vector search instead of single-document context
+- Admin UI for uploading new documents
+- Conversation history persisted per user

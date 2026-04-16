@@ -1,4 +1,4 @@
-const ANTHROPIC_API_KEY = "__REPLACE_WITH_ANTHROPIC_KEY__";
+const ANTHROPIC_API_KEY = "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";
 
 const API_URL = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-haiku-4-5-20251001";

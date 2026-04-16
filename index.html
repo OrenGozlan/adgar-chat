@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adgar Chat — עוזר נהלי החברה</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">A</span>
+      <div class="brand-text">
+        <h1>Adgar Chat</h1>
+        <p>עוזר חכם לנהלי החברה — מבוסס על חוברת הנהלים 12.2024</p>
+      </div>
+    </div>
+    <button id="settingsBtn" class="icon-btn" title="הגדרות">⚙</button>
+  </header>
+
+  <main>
+    <section class="faq-panel">
+      <h2>שאלות נפוצות</h2>
+      <div id="faqList" class="faq-list">
+        <button class="faq-item" data-q="איך מזמינים ימי חופשה ומי מאשר?">
+          <span class="faq-num">1</span>
+          איך מזמינים ימי חופשה ומי מאשר?
+        </button>
+        <button class="faq-item" data-q="מה תהליך גיוס וקליטת עובד חדש בחברה?">
+          <span class="faq-num">2</span>
+          מה תהליך גיוס וקליטת עובד חדש?
+        </button>
+        <button class="faq-item" data-q="איך משתמשים בכרטיס סיבוס ומה הכללים?">
+          <span class="faq-num">3</span>
+          איך משתמשים בכרטיס סיבוס?
+        </button>
+        <button class="faq-item" data-q="מה הכללים לשימוש בכרטיס אשראי של החברה?">
+          <span class="faq-num">4</span>
+          כללים לשימוש בכרטיס אשראי של החברה
+        </button>
+        <button class="faq-item" data-q="מה נוהל השימוש בציוד עובדים וכיצד מחזירים ציוד?">
+          <span class="faq-num">5</span>
+          נוהל שימוש בציוד עובדים
+        </button>
+      </div>
+    </section>
+
+    <section class="chat-panel">
+      <div id="messages" class="messages">
+        <div class="msg assistant welcome">
+          <div class="bubble">
+            שלום! אני עוזר חכם לשאלות על נהלי אדגר. שאל אותי כל שאלה מתוך חוברת הנהלים, או בחר שאלה נפוצה למעלה.
+          </div>
+        </div>
+      </div>
+
+      <form id="chatForm" class="chat-input">
+        <input
+          id="userInput"
+          type="text"
+          placeholder="שאל שאלה על נהלי החברה…"
+          autocomplete="off"
+          dir="auto"
+        />
+        <button type="submit" id="sendBtn">שלח</button>
+      </form>
+    </section>
+  </main>
+
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-card">
+      <h3>הגדרות</h3>
+      <p class="modal-hint">
+        המפתח נשמר בדפדפן שלך בלבד (localStorage) ולא נשלח לשום שרת חוץ מ-Anthropic.
+        השג מפתח ב-<a href="https://console.anthropic.com/" target="_blank" rel="noopener">console.anthropic.com</a>.
+      </p>
+      <label>
+        Anthropic API Key
+        <input id="apiKeyInput" type="password" placeholder="sk-ant-..." />
+      </label>
+      <div class="modal-actions">
+        <button id="saveKeyBtn" class="primary">שמור</button>
+        <button id="clearKeyBtn" class="ghost">מחק מפתח</button>
+        <button id="closeModalBtn" class="ghost">סגור</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    שלב 1 MVP · המידע מוגבל לחוברת הנהלים 12.2024 · <span id="keyStatus">אין מפתח API</span>
+  </footer>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
